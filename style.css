@@ -1,0 +1,52 @@
+/* -- General CSS --*/
+.body{
+	font-family: Open Sans;
+	font-weight: 300;
+	margin: 0;
+	/* background-color: black; 
+	background-image:url(http://www.hi-rev.com.my/0/IMG/bg_color.png);
+	background-attachment:fixed; 
+	size:auto; */
+}
+
+.content_{
+	width: 100%;
+	max-width: 898px;
+	background-color: #FFF;
+	box-shadow: 0px 0px 8px grey;
+}
+
+.header{
+	background-color: #333;
+	width: 100%;
+	max-width: 900px;
+	text-align: left;
+	margin-top: 20px;
+}
+
+.input_{
+	padding: 5px;
+}
+.btn_{
+	padding: 10px;
+	border-radius: 5em;
+	cursor: pointer;
+}
+.btn_:hover{
+	background-color: #FFDD33;	
+}
+
+/* -- Mobile CSS -- */
+@media screen and (max-width:680px) 
+{
+	.content_{
+		width: 99%;
+	}
+	.header{
+		background-color: #333;
+		width: 100%;
+		max-width: 900px;
+		text-align: left;
+		margin-top: 0;
+	}
+}
