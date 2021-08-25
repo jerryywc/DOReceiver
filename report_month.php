@@ -68,7 +68,7 @@
 
 
 <div>
-    <form action="report_month.php" method="GET">
+    <form id="report_form" action="report_month.php" method="GET">
     Month: 
     <select id='month' name='month'>
         <option value="1">Jan</option>
@@ -96,7 +96,10 @@
         
     </select>
     <input type="hidden" name="NID" value="<?=$NID?>"/>
-    <input type="submit" value="Load Report">
+    <input type="submit" value="Load Report">    
+    <input type="button" onclick="loadDetailReport()" value="Load Detail Report"/>
+    <input type="button" onclick="loadITReport()" value="IT Report"/>
+    
     </form>
 </div>
 
@@ -213,6 +216,18 @@ try{
 
 
         });
+
+        function loadDetailReport(){
+            $("#report_form").attr('action', 'report_month_detail.php');
+            $("#report_form").attr('target', '_blank');
+            $("#report_form").submit();
+        }
+
+        function loadITReport(){
+            $("#report_form").attr('action', 'report_month_it.php');
+            $("#report_form").attr('target', '_blank');
+            $("#report_form").submit();
+        }
     </script>
 </body>
 </html>

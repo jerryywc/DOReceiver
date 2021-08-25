@@ -26,10 +26,15 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
    // echo "<script>alert('" . $gps . "');</script>";
     if($gps != ""){ //no image, but has gps
         $today = date('Y-m-d');
-        $now = date('h:i:sa');
+        $now = date('H:i:s');
+
+        date_default_timezone_set("Asia/Kuala_Lumpur");
+        $datetime = date('Y-m-d H:i:s');
+        $date_only = date('Y-m-d');
+        $time_only = date('H:i:s');
 
         // Check if DO exists
-        $sql = "SELECT * FROM lf_gatepass WHERE invoiceid=? AND coordinate=''";
+        $sql = "SELECT * FROM lf_gatepass WHERE invoiceid=? AND coordinate='' AND gps_date = ''  AND gps_time = ''";
 
         if($stmt = mysqli_prepare($conn, $sql)){       
             mysqli_stmt_bind_param($stmt,"s",$id);
@@ -41,8 +46,12 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
         if($row = mysqli_fetch_array($result)) {
 
             // Update record
-            $sql = "UPDATE lf_gatepass SET coordinate = ?, gps_date = date(now()), gps_time = time(now()), sync_out = '1', staff_id = ?
+            
+            $sql = "UPDATE lf_gatepass SET coordinate = ?, gps_date='$date_only', gps_time='$time_only', sync_out = '1', staff_id = ?
                     WHERE invoiceid = ?";
+            
+            //$sql = "UPDATE lf_gatepass SET sync_out = '1', staff_id = ?
+            //        WHERE invoiceid = ?";
 
             if($stmt = mysqli_prepare($conn, $sql)){       
                 mysqli_stmt_bind_param($stmt,"sss",$gps, $auth_id, $id);
@@ -80,8 +89,8 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
 
      //"h:i:sa
     $today = date('Y-m-d');
-    $now = date('h:i:sa');
-    $curr = date('Y-m-d h:i:sa');
+    $now = date('H:i:s');
+    $curr = date('Y-m-d H:i:s');
     //BEGIN check Image AVAILLABLE?
 
     $target_dir = "../api/do/";
@@ -105,17 +114,26 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
     if($row = mysqli_fetch_array($result)) {
 
         if($row['coordinate'] == "" and $gps != ""){
+            date_default_timezone_set("Asia/Kuala_Lumpur");
+            $datetime = date('Y-m-d H:i:s');
+            $date_only = date('Y-m-d');
+            $time_only = date('H:i:s');
+
             /*
             $q_update = "UPDATE lf_gatepass SET coordinate='$gps', gps_date='$today', gps_time='$now', sync_out='1', staff_id = '$auth_id' WHERE invoiceid='$id'";
             $r_update = mysql_query($q_update);
             */
 
             // Update record
+            /*
             $sql = "UPDATE lf_gatepass SET coordinate = ?, gps_date = date(now()), gps_time = time(now()), sync_out = '1', staff_id = ?
                     WHERE invoiceid = ?";
+            */
+            $sql = "UPDATE lf_gatepass SET coordinate = ?, gps_date='$date_only', gps_time='$time_only', sync_out = '1', staff_id = ?
+                    WHERE invoiceid = ? AND coordinate='' AND gps_date = ''  AND gps_time = ''";
 
             if($stmt = mysqli_prepare($conn, $sql)){       
-                mysqli_stmt_bind_param($stmt,"sss",$gps, $auth_id, $id);
+                mysqli_stmt_bind_param($stmt,"sss", $gps, $auth_id, $id);
                 mysqli_stmt_execute($stmt);
             } 
         }
