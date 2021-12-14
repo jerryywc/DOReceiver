@@ -1,4 +1,4 @@
-<?php require_once "_require/dbconn.php"?>
+<?php require_once "_includes/dbconn.php"?>
 
 <?php //session_start(); 
 	//$nameid = $_REQUEST['NID'];
@@ -15,7 +15,7 @@
         $year = $_GET['year'];
     }
     
-
+/*
 
 	$FullName;
 	$transporterid;
@@ -144,6 +144,7 @@
 
 $x = 0;
 try{
+    $conn = $mysqli_conn;
 	//if(!empty($transporterid)){
 		$sql = "SELECT * FROM lf_gatepass where month(invoicedate) = ? AND year(invoicedate) = ?  ORDER BY invoicedate, invoiceid";
 		if($stmt = mysqli_prepare($conn, $sql)){       

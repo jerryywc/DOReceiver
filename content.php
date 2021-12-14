@@ -1,6 +1,18 @@
 <?php require_once "_require/js.php"?>
 <script type="text/javascript">
 
+
+         /*code: 48-57 Numbers*/
+         function restrictAlphabets(e) {
+             var x = e.which || e.keycode;
+             if ((x >= 48 && x <= 57))
+                 return true;
+             else
+                 return false;
+         }
+      
+
+
 //Get Coordinate
 function getLocation() {
     if (navigator.geolocation) {
@@ -333,37 +345,49 @@ function showPosition_save(position) {
 </script>
 <p>
 <form id="form_update" name="form_update" action="_api/api_submit.php" method="post" enctype="multipart/form-data">
-DO Number <input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -"> &nbsp; 
+DO Number <input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -" onkeypress='return restrictAlphabets(event)'> &nbsp; 
 <input type="button" name="checkin_save_btn" id="checkin_save_btn" class="btn_" value=" Check In " onclick="checkInSubmit()" style="display:none" > <br> (Last 5 - XXXXX)
 
 <div id="imgscreen" style="display:none">
 <!-- Upload Image 1 -->
-<br><br><center><img id='p_image1' alt='no file selected...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<br><br><center><img id='p_image1' alt='No preview available...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<!--
 	<center><input type="button" name="btn_1_up" id="btn_1_up" class="input_" value=" Upload DO Page 1 " class="btn_" onclick="document.getElementById('f_1_up').click(); return false; showname();" style="cursor: pointer;"></center>
-	<input type="file" class="f_1_up" id="f_1_up" name="f_1_up" accept="image/*" onchange="loadfile1(event); showname();" style="visibility: hidden;">
+	<input type="file" class="f_1_up" id="f_1_up" name="f_1_up"  onchange="loadfile1(event); showname();" style="visibility: hidden;">
+-->    
+    <input type="file" class="f_1_up" id="f_1_up" name="f_1_up"  onchange="loadfile1(event); showname();" >
 	<input type="hidden" id="img1" name="img1" value="">
 
 
 <!-- Upload Image 2 -->
 <div id="content_div_2" style="display: none">
-<br><br><center><img id='p_image2' alt='no file selected...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<br><br><center><img id='p_image2' alt='No preview available...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<!--
     <center><input type="button" name="btn_2_up" id="btn_2_up" class="input_" value=" Upload DO Page 2 " class="btn_" onclick="document.getElementById('f_2_up').click(); return false; showname();" style="cursor: pointer;"></center>
-    <input type="file" class="f_2_up" id="f_2_up" name="f_2_up" accept="image/*" onchange="loadfile2(event); showname();" style="visibility: hidden;">
+    <input type="file" class="f_2_up" id="f_2_up" name="f_2_up"  onchange="loadfile2(event); showname();" style="visibility: hidden;">
+-->
+    <input type="file" class="f_2_up" id="f_2_up" name="f_2_up"  onchange="loadfile2(event); showname();">
     <input type="hidden" id="img2" name="img2" value="">
 </div>
 
 <!-- Upload Image 3 -->
 <div id="content_div_3" style="display: none">
-<br><br><center><img id='p_image3' alt='no file selected...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<br><br><center><img id='p_image3' alt='No preview available...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<!--
     <center><input type="button" name="btn_3_up" id="btn_3_up" class="input_" value=" Upload DO Page 3 " class="btn_" onclick="document.getElementById('f_3_up').click(); return false; showname();" style="cursor: pointer;"></center>
-    <input type="file" class="f_3_up" id="f_3_up" name="f_3_up" accept="image/*" onchange="loadfile3(event); showname();" style="visibility: hidden;">
+    <input type="file" class="f_3_up" id="f_3_up" name="f_3_up"  onchange="loadfile3(event); showname();" style="visibility: hidden;">
+-->
+    <input type="file" class="f_3_up" id="f_3_up" name="f_3_up"  onchange="loadfile3(event); showname();" >
     <input type="hidden" id="img3" name="img3" value="">
 </div>
 <!-- Upload Image 4 -->
 <div id="content_div_4" style="display: none">
-<br><br><center><img id='p_image4' alt='no file selected...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<br><br><center><img id='p_image4' alt='No preview available...' src='#' style='font-size: 12px; color: #595959; height: 100px;'></center>
+<!--
     <center><input type="button" name="btn_4_up" id="btn_4_up" class="input_" value=" Upload DO Page 4 " class="btn_" onclick="document.getElementById('f_4_up').click(); return false; showname();" style="cursor: pointer;"></center>
-    <input type="file" class="f_4_up" id="f_4_up" name="f_4_up" accept="image/*" onchange="loadfile4(event); showname();" style="visibility: hidden;">
+    <input type="file" class="f_4_up" id="f_4_up" name="f_4_up"  onchange="loadfile4(event); showname();" style="visibility: hidden;">
+-->
+    <input type="file" class="f_4_up" id="f_4_up" name="f_4_up"  onchange="loadfile4(event); showname();" >
     <input type="hidden" id="img4" name="img4" value="">
 </div>
 

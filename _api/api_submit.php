@@ -198,7 +198,8 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
                     /*
                     if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType02 != "png" && $imageFileType02 != "jpg" && $imageFileType02 != 'jpeg')
                     */
-                    if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg')
+                    if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' 
+                        && $imageFileType != 'pdf')
                     {
                         $uploadOk = 0;
                         $error = $error . "Invalid image filetype: " . $imageFileType;
@@ -308,7 +309,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
         /*
         if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType02 != "png" && $imageFileType02 != "jpg" && $imageFileType02 != 'jpeg')
         */
-        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg')
+        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType != 'pdf')
         {
             $uploadOk = 0;
         }
@@ -414,7 +415,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
         /*
         if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType02 != "png" && $imageFileType02 != "jpg" && $imageFileType02 != 'jpeg')
         */
-        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg')
+        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType != 'pdf')
         {
             $uploadOk = 0;
         }
@@ -522,7 +523,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // no img
         /*
         if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType02 != "png" && $imageFileType02 != "jpg" && $imageFileType02 != 'jpeg')
         */
-        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg')
+        if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != 'jpeg' && $imageFileType != 'pdf')
         {
             $uploadOk = 0;
         }
