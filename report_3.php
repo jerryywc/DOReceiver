@@ -71,7 +71,8 @@ require "menu.php";
 $x = 0;
 try{
 	if(!empty($transporterid)){
-		$sql = "SELECT * FROM lf_gatepass where transportercode=? AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+		//$sql = "SELECT * FROM lf_gatepass where transportercode=? AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+        $sql = "SELECT * FROM lf_gatepass where transportercode=?  AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
 		if($stmt = mysqli_prepare($conn, $sql)){       
             mysqli_stmt_bind_param($stmt,"s",$transporterid);
             $result = mysqli_stmt_execute($stmt);
@@ -110,7 +111,8 @@ try{
 
         }
 	} else {
-		$sql = "SELECT * FROM lf_gatepass where staff_id=? AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+		//$sql = "SELECT * FROM lf_gatepass where staff_id=? AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+        $sql = "SELECT * FROM lf_gatepass where staff_id=?  AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
 		if($stmt = mysqli_prepare($conn, $sql)){       
             mysqli_stmt_bind_param($stmt,"s",$NID);
             $result = mysqli_stmt_execute($stmt);

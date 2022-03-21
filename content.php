@@ -42,6 +42,11 @@ function doSearch(){
     var donum = $('#donum').val();
     var auth_id = $('#auth_id').val();
 
+    if(donum.length < 8){
+        alert("Pleaes enter first 8 letters, eg: 80659171 OR KK001777");
+        return;
+    }
+
     $.ajax({
         url: "_api/do_search.php",
         timeout:30000,
@@ -346,7 +351,7 @@ function showPosition_save(position) {
 <p>
 <form id="form_update" name="form_update" action="_api/api_submit.php" method="post" enctype="multipart/form-data">
 DO Number <input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -" onkeypress='return restrictAlphabets(event)'> &nbsp; 
-<input type="button" name="checkin_save_btn" id="checkin_save_btn" class="btn_" value=" Check In " onclick="checkInSubmit()" style="display:none" > <br> (Last 5 - XXXXX)
+<input type="button" name="checkin_save_btn" id="checkin_save_btn" class="btn_" value=" Check In " onclick="checkInSubmit()" style="display:none" > <br> (First 8 letters, eg: 80659171 OR KK001777)
 
 <div id="imgscreen" style="display:none">
 <!-- Upload Image 1 -->

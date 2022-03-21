@@ -77,7 +77,8 @@ function showPosition(position) {
 
         $x = 0;
         if($transid != ''){
-            $select_q = "SELECT * FROM lf_gatepass where transportercode='$transid' AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+            //$select_q = "SELECT * FROM lf_gatepass where transportercode='$transid' AND coordinate!='' AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
+            $select_q = "SELECT * FROM lf_gatepass where transportercode='$transid'  AND gps_date >= ( CURDATE() - INTERVAL 3 DAY )";
             $query_q = mysql_query($select_q);
             while($row_q = mysql_fetch_assoc($query_q)):
 
