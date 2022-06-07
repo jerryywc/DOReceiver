@@ -48,10 +48,11 @@
 
     if(!empty($transporterid)){ // If user is transporter
 
-     	$sql = "SELECT * FROM lf_gatepass WHERE invoiceid LIKE ? AND transportercode = ? AND gatepassdate >= ? AND dms_status != 2 ORDER BY invoiceid DESC";
+     	//$sql = "SELECT * FROM lf_gatepass WHERE invoiceid LIKE ? AND transportercode = ? AND gatepassdate >= ? AND dms_status != 2 ORDER BY invoiceid DESC";
+			$sql = "SELECT * FROM lf_gatepass WHERE invoiceid LIKE ? AND transportercode = ? AND dms_status != 2 ORDER BY invoiceid DESC";
 
      	if($stmt = mysqli_prepare($conn, $sql)){       
-	      mysqli_stmt_bind_param($stmt,"sss",$donum_wildcard, $transporterid, $next_date);
+	      mysqli_stmt_bind_param($stmt,"ss",$donum_wildcard, $transporterid);
 	      $result = mysqli_stmt_execute($stmt);
 	    } 
 
