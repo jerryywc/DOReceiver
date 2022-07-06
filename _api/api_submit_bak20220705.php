@@ -280,52 +280,9 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     echo "<script type='text/javascript'>alert(\"Fail upload image 1: " . $error . "\");window.history.go(-1);</script>";
                 
                 }else{
-                    $upload_results = "";
-
-                    // SERVER A - UPLOAD FILE VIA CURL POST
-                    // (A) SETTINGS
-                    $url = "http://edms.posim.com.my/do_uploads/receiver.php"; // Where to upload file to
-                    //$file = __DIR__ . DIRECTORY_SEPARATOR . "README.txt"; // File to upload
-                    $file = $_FILES['f_1_up']['tmp_name'];
-                    //$upname = "uploaded.txt"; // File name to be uploaded as
-
-                    // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
-
-                    // (C) CURL INIT
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        // ATTACH FILE UPLOAD
-                        "upload" => $cf,
-                        // OPTIONAL - APPEND MORE POST DATA
-                        "KEY" => "VALUE"
-                    ]);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                    // (D) CURL RUN
-                    // (D1) GO!
-                    $result = curl_exec($ch);
-
-                    // (D2) CURL ERROR
-                    if (curl_errno($ch)) {
-                        echo "CURL ERROR - " . curl_error($ch);
-                    }
-
-                    // (D3) CURL OK - DO YOUR "POST UPLOAD" HERE
-                    else {
-                        // $info = curl_getinfo($ch);
-                        // print_r($info);
-                        $upload_result = $result;
-                    }
-
-                    // (D4) DONE
-                    curl_close($ch);
-
+                   
                     // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_1_up']['tmp_name'], $target_file)) {
-                    if($upload_result == "OK"){
+                    if (move_uploaded_file($_FILES['f_1_up']['tmp_name'], $target_file)) {
                         $today = date('Y-m-d');
 
                         // Update record
@@ -428,54 +385,8 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     echo "<script type='text/javascript'>alert(\"Fail upload image 2: " . $error . "\");window.history.go(-1);</script>";
                 
                 }else{
-                    $upload_results = "";
-
-                    // SERVER A - UPLOAD FILE VIA CURL POST
-                    // (A) SETTINGS
-                    $url = "http://edms.posim.com.my/do_uploads/receiver.php"; // Where to upload file to
-                    //$file = __DIR__ . DIRECTORY_SEPARATOR . "README.txt"; // File to upload
-                    $file = $_FILES['f_2_up']['tmp_name'];
-                    //$upname = "uploaded.txt"; // File name to be uploaded as
-
-                    // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
-
-                    // (C) CURL INIT
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        // ATTACH FILE UPLOAD
-                        "upload" => $cf,
-                        // OPTIONAL - APPEND MORE POST DATA
-                        "KEY" => "VALUE"
-                    ]);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                    // (D) CURL RUN
-                    // (D1) GO!
-                    $result = curl_exec($ch);
-
-                    // (D2) CURL ERROR
-                    if (curl_errno($ch)) {
-                        echo "CURL ERROR - " . curl_error($ch);
-                    }
-
-                    // (D3) CURL OK - DO YOUR "POST UPLOAD" HERE
-                    else {
-                        // $info = curl_getinfo($ch);
-                        // print_r($info);
-                        $upload_result = $result;
-                    }
-
-                    // (D4) DONE
-                    curl_close($ch);
-
                     // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_1_up']['tmp_name'], $target_file)) {
-                    if($upload_result == "OK"){
-                    // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_2_up']['tmp_name'], $target_file)) {
+                    if (move_uploaded_file($_FILES['f_2_up']['tmp_name'], $target_file)) {
                         $today = date('Y-m-d');
 
                         // Update record
@@ -575,54 +486,8 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     echo "<script type='text/javascript'>alert(\"Fail upload image 3: " . $error . "\");window.history.go(-1);</script>";
                 
                 }else{
-                    $upload_results = "";
-
-                    // SERVER A - UPLOAD FILE VIA CURL POST
-                    // (A) SETTINGS
-                    $url = "http://edms.posim.com.my/do_uploads/receiver.php"; // Where to upload file to
-                    //$file = __DIR__ . DIRECTORY_SEPARATOR . "README.txt"; // File to upload
-                    $file = $_FILES['f_3_up']['tmp_name'];
-                    //$upname = "uploaded.txt"; // File name to be uploaded as
-
-                    // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
-
-                    // (C) CURL INIT
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        // ATTACH FILE UPLOAD
-                        "upload" => $cf,
-                        // OPTIONAL - APPEND MORE POST DATA
-                        "KEY" => "VALUE"
-                    ]);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                    // (D) CURL RUN
-                    // (D1) GO!
-                    $result = curl_exec($ch);
-
-                    // (D2) CURL ERROR
-                    if (curl_errno($ch)) {
-                        echo "CURL ERROR - " . curl_error($ch);
-                    }
-
-                    // (D3) CURL OK - DO YOUR "POST UPLOAD" HERE
-                    else {
-                        // $info = curl_getinfo($ch);
-                        // print_r($info);
-                        $upload_result = $result;
-                    }
-
-                    // (D4) DONE
-                    curl_close($ch);
-
                     // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_1_up']['tmp_name'], $target_file)) {
-                    if($upload_result == "OK"){
-                    // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_3_up']['tmp_name'], $target_file)) {
+                    if (move_uploaded_file($_FILES['f_3_up']['tmp_name'], $target_file)) {
                         $today = date('Y-m-d');
 
                         // Update record
@@ -722,54 +587,8 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     echo "<script type='text/javascript'>alert(\"Fail upload image 4: " . $error . "\");window.history.go(-1);</script>";
                 
                 }else{
-                    $upload_results = "";
-
-                    // SERVER A - UPLOAD FILE VIA CURL POST
-                    // (A) SETTINGS
-                    $url = "http://edms.posim.com.my/do_uploads/receiver.php"; // Where to upload file to
-                    //$file = __DIR__ . DIRECTORY_SEPARATOR . "README.txt"; // File to upload
-                    $file = $_FILES['f_4_up']['tmp_name'];
-                    //$upname = "uploaded.txt"; // File name to be uploaded as
-
-                    // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
-
-                    // (C) CURL INIT
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        // ATTACH FILE UPLOAD
-                        "upload" => $cf,
-                        // OPTIONAL - APPEND MORE POST DATA
-                        "KEY" => "VALUE"
-                    ]);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                    // (D) CURL RUN
-                    // (D1) GO!
-                    $result = curl_exec($ch);
-
-                    // (D2) CURL ERROR
-                    if (curl_errno($ch)) {
-                        echo "CURL ERROR - " . curl_error($ch);
-                    }
-
-                    // (D3) CURL OK - DO YOUR "POST UPLOAD" HERE
-                    else {
-                        // $info = curl_getinfo($ch);
-                        // print_r($info);
-                        $upload_result = $result;
-                    }
-
-                    // (D4) DONE
-                    curl_close($ch);
-
                     // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_1_up']['tmp_name'], $target_file)) {
-                    if($upload_result == "OK"){
-                    // no error, upload file
-                    //if (move_uploaded_file($_FILES['f_4_up']['tmp_name'], $target_file)) {
+                    if (move_uploaded_file($_FILES['f_4_up']['tmp_name'], $target_file)) {
                         $today = date('Y-m-d');
 
                         // Update record
