@@ -4,6 +4,8 @@
 	//$nameid = $_REQUEST['NID'];
 	$NID = htmlspecialchars($_GET['NID']);
 	$FullName;
+	$do_upload;
+	$transporterid;
 
 	try{
                
@@ -17,7 +19,9 @@
         $result = $stmt -> get_Result();                
         
         if($row = mysqli_fetch_array($result)) {
-        	$FullName = $row['FullName'];        	
+        	$FullName = $row['FullName'];
+					$do_upload = $row['do_upload'];
+					$transporterid = $row['transporterid'];
         }
 	} catch (mysqli_sql_exception $e){
         echo $e->getMessage();    

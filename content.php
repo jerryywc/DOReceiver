@@ -348,6 +348,23 @@ function showPosition_save(position) {
             }
         }
 </script>
+
+<?php
+    $bulk_upload_btn = "";
+    //reminder: $do_upload value is retrieved in index.php
+    if(isset($do_upload) && $do_upload == '1'){
+        $bulk_upload_btn = 
+            "<a href='bulk_upload.php?NID=$FullName' 
+                style='padding:10px;border:outset; margin:5px;text-decoration:none; color:black'>
+                Bulk Upload
+            </a>";
+    }
+?>
+
+<div style="text-align:right; margin-top:15px;">
+    <?=$bulk_upload_btn?>
+</div>
+
 <p>
 <form id="form_update" name="form_update" action="_api/api_submit.php" method="post" enctype="multipart/form-data">
 DO Number <input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -" onkeypress='return restrictAlphabets(event)'> &nbsp; 
