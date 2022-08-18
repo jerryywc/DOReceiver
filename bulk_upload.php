@@ -139,8 +139,8 @@
 			var folder = $("#folder_name").val();
 				
 			$.ajax({
-				//url: "//edms.posim.com.my/do_uploads/_api/bulk_receiver.php", //live
-				url: "../do_uploads/_api/bulk_receiver.php", //test
+				url: "https://edms.posim.com.my/do_uploads/_api/bulk_receiver.php", //live
+				//url: "../do_uploads/_api/bulk_receiver.php", //test
 				timeout:30000,
 				type: "GET",
 				data: {
@@ -176,7 +176,7 @@
 			$.ajax({
 				url: "_api/bulk_uploads_submit_gettable.php",
 				timeout:30000,
-				type: "GET",
+				type: "POST",
 				data: {
 					json_text:json_text,
 					staff_name:staff_name,

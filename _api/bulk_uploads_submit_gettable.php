@@ -10,8 +10,8 @@
         $response = new stdClass();
 
     $staff_name = "";
-    if(isset($_GET['staff_name']) && !empty($_GET['staff_name'])){
-        $staff_name = $_GET['staff_name'];
+    if(isset($_POST['staff_name']) && !empty($_POST['staff_name'])){
+        $staff_name = $_POST['staff_name'];
     } else {
         $response->status = "failed";
         $response->msg = "No staff name provided.";
@@ -22,8 +22,8 @@
     }
 
     $coordinate = "";
-    if(isset($_GET['coordinate']) && !empty($_GET['coordinate'])){
-        $coordinate = $_GET['coordinate'];
+    if(isset($_POST['coordinate']) && !empty($_POST['coordinate'])){
+        $coordinate = $_POST['coordinate'];
     } else {
         $response->status = "failed";
         $response->msg = "No coordinate provided.";
@@ -34,8 +34,8 @@
     }
 
     $json_text = "";
-    if(isset($_GET['json_text']) && !empty(trim($_GET['json_text']))){
-        $json_text = $_GET["json_text"];
+    if(isset($_POST['json_text']) && !empty(trim($_POST['json_text']))){
+        $json_text = $_POST["json_text"];
     } else {
         $response->status = "failed";
         $response->msg = "No value provided.";
