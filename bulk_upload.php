@@ -136,42 +136,10 @@
 		}
 
 		function move_files(){
-			var folder = $("#folder_name").val();
-				
-			$.ajax({
-				url: "https://edms.posim.com.my/do_uploads/_api/bulk_receiver.php", //live
-				//url: "../do_uploads/_api/bulk_receiver.php", //test
-				timeout:30000,
-				type: "GET",
-				data: {
-					folder:folder
-				},				
-				success: function(response){
-					console.log(response);
-					var data = JSON.parse(response);
-
-					if(data.status.startsWith("success")){
-						$('#json_respond').val(data.msg);
-						get_table();
-						// update table
-						// window.location.replace("rev4u_appointments.php");
-
-					} else if(data.status.startsWith("failed")){
-						alert(data.msg);
-						//console.log(data.msg);
-					}
-				},
-				error: function(jqXHR, textStatus){
-		    	console.log(textStatus.toString());
-		    	alert('Error encoutered, kindly check the console log');
-		  	}
-			});
-		} // end of move_files()
-
-		function get_table(){
 			var json_text = $("#json_respond").val();
 			var staff_name = $("#full_name").val();
 			var coordinate = $("#coordinate").val();
+			var folder = $("#folder_name").val();
 				
 			$.ajax({
 				url: "_api/bulk_uploads_submit_gettable.php",
@@ -180,12 +148,14 @@
 				data: {
 					json_text:json_text,
 					staff_name:staff_name,
-					coordinate:coordinate
+					coordinate:coordinate,
+					folder:folder
 				},				
 				success: function(response){
-					console.log(response);
+					//console.log(response);
 
 					var data = JSON.parse(response);
+					console.log("data:" + data.status);
 
 					if(data.status.startsWith("success")){
 						$("#table").html(data.msg);
@@ -201,7 +171,7 @@
 					}
 				},
 				error: function(jqXHR, textStatus){
-		    	console.log(textStatus.toString());
+		    	console.log("error:" + textStatus.toString());
 		    	alert('Error encoutered, kindly check the console log');
 		  	}
 			});

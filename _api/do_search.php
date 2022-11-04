@@ -23,6 +23,24 @@
 	$img_name_4;
 
 	try{
+
+		$sql = "SELECT * FROM lf_gatepass WHERE invoiceid LIKE ? AND dms_status = 2";
+
+		if($stmt = mysqli_prepare($conn, $sql)){       
+			mysqli_stmt_bind_param($stmt,"s",$donum_wildcard);
+			$result = mysqli_stmt_execute($stmt);
+		} 
+
+		$result = $stmt -> get_Result();                
+				
+		if($row = mysqli_fetch_array($result)) { 
+			$response->status = "failed";
+		  $response->msg = "Invoice already been approved";
+		  $json_response = json_encode($response);
+		  echo $json_response;
+		  exit;
+		}
+
         
     // get the user info to determine if user is transporter or admin (do_upload = 1)       
     $sql = "SELECT * FROM auth_id where FullName = ? ";

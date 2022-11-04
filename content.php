@@ -358,16 +358,26 @@ function showPosition_save(position) {
                 style='padding:10px;border:outset; margin:5px;text-decoration:none; color:black'>
                 Bulk Upload
             </a>";
+
+        $single_pod_upload_btn = 
+            "<a href='single_scanned_file_upload.php?NID=$FullName' 
+                style='padding:10px;border:outset; margin:5px;text-decoration:none; color:black'>
+                Single Scanned File Upload
+            </a>";
     }
 ?>
 
-<div style="text-align:right; margin-top:15px;">
-    <?=$bulk_upload_btn?>
+<div style="text-align:right; margin-top:15px;margin-bottom:35px;">
+    <?=$bulk_upload_btn?><?=$single_pod_upload_btn?>
 </div>
+
+
 
 <p>
 <form id="form_update" name="form_update" action="_api/api_submit.php" method="post" enctype="multipart/form-data">
-DO Number <input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -" onkeypress='return restrictAlphabets(event)'> &nbsp; 
+DO Number <!--<input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -" onkeypress='return restrictAlphabets(event)'>-->
+<input type="text" value="" id="donum" name="donum" class="input_" placeholder="- DO Number -">
+ &nbsp; 
 <input type="button" name="checkin_save_btn" id="checkin_save_btn" class="btn_" value=" Check In " onclick="checkInSubmit()" style="display:none" > <br> (First 8 letters, eg: 80659171 OR KK001777)
 
 <div id="imgscreen" style="display:none">

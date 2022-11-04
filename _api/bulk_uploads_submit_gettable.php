@@ -19,6 +19,7 @@
         $json_response = json_encode($response);
 
         echo $json_response;
+        exit;
     }
 
     $coordinate = "";
@@ -31,8 +32,23 @@
         $json_response = json_encode($response);
 
         echo $json_response;
+        exit;
     }
 
+    $folder = "";
+    if(isset($_POST['folder']) && !empty(trim($_POST['folder']))){
+        $folder = $_POST["folder"];
+    } else {
+        $response->status = "failed";
+        $response->msg = "No folder provided.";
+
+        $json_response = json_encode($response);
+
+        echo $json_response;
+        exit;
+    }
+
+    /*
     $json_text = "";
     if(isset($_POST['json_text']) && !empty(trim($_POST['json_text']))){
         $json_text = $_POST["json_text"];
@@ -43,9 +59,40 @@
         $json_response = json_encode($response);
 
         echo $json_response;
+        exit;
     }
+    */
+
+    // TO DO, add cURL here and remove the ajax call in bulk_upload.php to https://edms.posim.com.my/do_uploads/_api/bulk_receiver.php
+
+    // set post fields
+    $post = [
+        'folder' => $folder
+    ];
+
+    $ch = curl_init('http://edms.posim.com.my/do_uploads/_api/bulk_receiver.php');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+
+    // execute!
+    $curl_response = curl_exec($ch);
+
+    // close the connection, release resources used
+    curl_close($ch);
+
+    // do anything you want with your response
+    //var_dump($json_text);
+
+
+
+    $response_text = json_decode($curl_response);
+    $json_text = $response_text->msg;
+
 
     $do_list = json_decode($json_text);
+    //echo "do_list: ";
+    //print_r($do_list);
+
 
     $table = "<table id='do_table' border=1 style='width:100%'>
                 <tr>
@@ -63,6 +110,9 @@
         $status_html = "";
 
         if($status == "success"){
+            $status_html = "<span style='color:green'>" . $status . "</span>";
+            update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate);
+        }else if($status == "exists"){
             $status_html = "<span style='color:green'>" . $status . "</span>";
             update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate);
         } else {
@@ -118,7 +168,8 @@
         $sql;
         try{
             $sql ="UPDATE lf_gatepass SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
-                    WHERE invoiceid like ? AND coordinate = '' AND gps_date = '' AND gps_time = ''";
+                    WHERE invoiceid like ? AND coordinate = '' AND gps_date = '' AND gps_time = '' 
+                    AND img_name_1 = '' AND img_name_2 = '' AND img_name_3 = '' AND img_name_4 = ''";
 
             if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
                 mysqli_stmt_bind_param($stmt,"sssss",$coordinate, $date_only, $time_only, $staff_name, $do);
@@ -126,13 +177,13 @@
             } 
 
             if (strpos($new_file_name, '_1.') !== false){
-                $sql = "UPDATE lf_gatepass SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ?";
+                $sql = "UPDATE lf_gatepass SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_1 = ''";
             } else if(strpos($new_file_name, '_2.') !== false) {
-                $sql = "UPDATE lf_gatepass SET img_name_2 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ?";
+                $sql = "UPDATE lf_gatepass SET img_name_2 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_2 = ''";
             } else if(strpos($new_file_name, '_3.') !== false) {
-                $sql = "UPDATE lf_gatepass SET img_name_3 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ?";
+                $sql = "UPDATE lf_gatepass SET img_name_3 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_3 = ''";
             } else if(strpos($new_file_name, '_4.') !== false) {
-                $sql = "UPDATE lf_gatepass SET img_name_4 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ?";
+                $sql = "UPDATE lf_gatepass SET img_name_4 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_4 = ''";
             }
 
             if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
