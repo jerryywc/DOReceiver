@@ -248,11 +248,12 @@
 					//console.log(response);
 
 					var data = JSON.parse(response);
+					$("#table").html(response);
 					console.log("data:" + data.status);
 
 					if(data.status.startsWith("success")){
 						$("#table").html(data.msg);
-						alert("POD upload successful. Pleaese double check the file should you encounter 'exists' or 'failed");
+						alert("POD upload successful.");
 
 						$('input:button').each(function(){
 							if ($(this).val() == 'Validate')  {

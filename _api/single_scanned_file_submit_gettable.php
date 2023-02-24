@@ -43,11 +43,23 @@
     $newname = $_POST['verified_do_number'][0] . date('Ymd_His');
     $newname = str_replace("/","",$newname);
 
+    $image_1 = "";
+
     if (isset($_FILES["scanned_file"]["name"])) {
         $image_1 = $_FILES["scanned_file"]["name"];
         //echo "Filename" . basename($_FILES['scanned_file']['name']) . "\n";
         //echo "Filename: " . $newname . "\n";
-    }     
+    }
+
+    if(empty($image_1)){
+        $response->status = "failed";
+        $response->msg = "Please select file to upload. ";
+                
+        $json_response = json_encode($response);
+                
+        echo $json_response;
+        exit;
+    }
 
     if ($image_1 != '') { // Image 1 detected
 
@@ -188,19 +200,40 @@
                 }
 
                 $invoice_list = $invoice_list . "''";
+
+
+                $email = "";
+                $status_by = "";
+
+                $sql = "SELECT Email FROM auth_id WHERE FullName = ?";
+
+                if($stmt = mysqli_prepare($conn, $sql)){       
+                    mysqli_stmt_bind_param($stmt,"s",$staff_name);
+                    $result = mysqli_stmt_execute($stmt);
+                } 
+
+                $result = $stmt -> get_Result();                
+                
+                // if record found in lf_gatepass
+                if($row = mysqli_fetch_array($result)) {
+                    $email = $row['Email'];
+                    $status_by = substr($email, 0, strpos($email, "@"));
+                }
                 
 
                 //if($lf_gatepass_has_record == 1) {
-                    $sql = "UPDATE lf_gatepass SET img_name_1=?, sync_out='1', coordinate = ?, img_datetime=now(), staff_id = ?
+
+                $date_only = date('Y-m-d');
+                $time_only = date('H:i:s');
+
+                $sql = "UPDATE lf_gatepass SET img_name_1=?, sync_out='1', coordinate = ?, img_datetime=now(), staff_id = ?, gps_date = ?, gps_time = ?,
+                            status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
                         WHERE invoiceid IN (" . $invoice_list . ")";
-                //} else if($lf_gatepass_temp_has_record == 1){
-                //    $sql = "UPDATE lf_gatepass_temp SET img_name_1=?, sync_out='1', img_datetime=now(), staff_id = ?
-                //        WHERE invoiceid IN (" . $invoice_list . ")";
-                //}
+
 
 
                 if($stmt = mysqli_prepare($conn, $sql)){       
-                    mysqli_stmt_bind_param($stmt,"sss",$newfilename, $coordinate, $staff_name);
+                    mysqli_stmt_bind_param($stmt,"sssssss",$newfilename, $coordinate, $staff_name, $date_only, $time_only, $status_by, $email);
                     mysqli_stmt_execute($stmt);
                 } 
 
@@ -225,7 +258,7 @@
                    
             }else{ // unable to upload file
                 $response->status = "failed";
-                $response->msg = "Failed to upload Image upload for: </br>" . $response_msg;
+                $response->msg = "Failed to upload Image upload for: </br>" . $upload_result;
             
                 $json_response = json_encode($response);
             
@@ -235,26 +268,86 @@
         }
 
     }
+?>
+
+<?php
 
 
 
+    function mime_content_type($f) {
+      $filename = $f;
 
+        $mime_types = array(
 
+            'txt' => 'text/plain',
+            'htm' => 'text/html',
+            'html' => 'text/html',
+            'php' => 'text/html',
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            'swf' => 'application/x-shockwave-flash',
+            'flv' => 'video/x-flv',
 
+            // images
+            'png' => 'image/png',
+            'jpe' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'ico' => 'image/vnd.microsoft.icon',
+            'tiff' => 'image/tiff',
+            'tif' => 'image/tiff',
+            'svg' => 'image/svg+xml',
+            'svgz' => 'image/svg+xml',
 
+            // archives
+            'zip' => 'application/zip',
+            'rar' => 'application/x-rar-compressed',
+            'exe' => 'application/x-msdownload',
+            'msi' => 'application/x-msdownload',
+            'cab' => 'application/vnd.ms-cab-compressed',
 
+            // audio/video
+            'mp3' => 'audio/mpeg',
+            'qt' => 'video/quicktime',
+            'mov' => 'video/quicktime',
 
+            // adobe
+            'pdf' => 'application/pdf',
+            'psd' => 'image/vnd.adobe.photoshop',
+            'ai' => 'application/postscript',
+            'eps' => 'application/postscript',
+            'ps' => 'application/postscript',
 
+            // ms office
+            'doc' => 'application/msword',
+            'rtf' => 'application/rtf',
+            'xls' => 'application/vnd.ms-excel',
+            'ppt' => 'application/vnd.ms-powerpoint',
 
+            // open office
+            'odt' => 'application/vnd.oasis.opendocument.text',
+            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        );
 
-
-
-
-    
-
-
-    
-
+        $tmp_explode = explode('.',$filename);
+        $ext = strtolower(array_pop($tmp_explode));
+        if (array_key_exists($ext, $mime_types)) {
+            return $mime_types[$ext];
+        }
+        elseif (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME);
+            $mimetype = finfo_file($finfo, $filename);
+            finfo_close($finfo);
+            return $mimetype;
+        }
+        else {
+            return 'application/octet-stream';
+        }
+    }
 
 
 ?>

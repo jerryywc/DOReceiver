@@ -364,11 +364,17 @@ function showPosition_save(position) {
                 style='padding:10px;border:outset; margin:5px;text-decoration:none; color:black'>
                 Single Scanned File Upload
             </a>";
+
+        $import_voucher_data_btn = 
+            "<a href='import_voucher_data/index.php' 
+            style='padding:10px;border:outset; margin:5px;text-decoration:none; color:black'>
+            Import Voucher Data
+        </a>";
     }
 ?>
 
 <div style="text-align:right; margin-top:15px;margin-bottom:35px;">
-    <?=$bulk_upload_btn?><?=$single_pod_upload_btn?>
+    <?=$bulk_upload_btn?><?=$single_pod_upload_btn?><?=$import_voucher_data_btn?>
 </div>
 
 
