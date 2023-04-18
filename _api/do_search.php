@@ -135,7 +135,30 @@
 	    	$img_name_2 = $row['img_name_2'];
 	     	$img_name_3 = $row['img_name_3'];
 	     	$img_name_4 = $row['img_name_4'];
-	    } 
+	    } else {
+				$datetime = date('Y-m-d H:i:s');
+
+					$sql = "INSERT INTO lf_gatepass_temp (invoiceid, received_datetime, insert_by) 
+          				values (?, ?, 'null_value')";
+
+					if($stmt = mysqli_prepare($conn, $sql)){       
+						mysqli_stmt_bind_param($stmt,"ss",$donum, $datetime);
+						mysqli_stmt_execute($stmt);
+						$invoiceid = $donum;
+
+						$response->status = "success";
+						$response->msg = "success";
+						$response->invoiceid = $invoiceid;
+						$response->coordinate = "";
+						$response->img_name_1 = "";
+						$response->img_name_2 = "";
+						$response->img_name_3 = "";
+						$response->img_name_4 = "";
+						$json_response = json_encode($response);
+						echo $json_response;
+						exit;
+					} 
+			}
 	  }
 
 	  if(!empty($invoiceid)){
