@@ -116,7 +116,7 @@
 		if(empty($invoiceid)){
 			$sql = "";
 			if(!empty($transporterid)) {
-				$sql = "SELECT * FROM lf_gatepass_temp WHERE invoiceid LIKE ? AND transportercode = '" . $transporterid . "' ORDER BY invoiceid DESC";
+				$sql = "SELECT * FROM lf_gatepass_temp WHERE invoiceid LIKE ? ORDER BY invoiceid DESC";
 			} else {
 				$sql = "SELECT * FROM lf_gatepass_temp WHERE invoiceid LIKE ? order by invoiceid desc";
 			}
@@ -138,26 +138,43 @@
 	    } else {
 				$datetime = date('Y-m-d H:i:s');
 
-					$sql = "INSERT INTO lf_gatepass_temp (invoiceid, received_datetime, insert_by) 
-          				values (?, ?, 'null_value')";
+					try{
 
-					if($stmt = mysqli_prepare($conn, $sql)){       
-						mysqli_stmt_bind_param($stmt,"ss",$donum, $datetime);
-						mysqli_stmt_execute($stmt);
-						$invoiceid = $donum;
+						$sql = "INSERT INTO lf_gatepass_temp (invoiceid, received_datetime, insert_by) 
+										values (?, ?, 'null_value')";
 
-						$response->status = "success";
-						$response->msg = "success";
-						$response->invoiceid = $invoiceid;
-						$response->coordinate = "";
-						$response->img_name_1 = "";
-						$response->img_name_2 = "";
-						$response->img_name_3 = "";
-						$response->img_name_4 = "";
-						$json_response = json_encode($response);
-						echo $json_response;
-						exit;
-					} 
+						if($stmt = mysqli_prepare($conn, $sql)){       
+							mysqli_stmt_bind_param($stmt,"ss",$donum, $datetime);
+							mysqli_stmt_execute($stmt);
+							$invoiceid = $donum;
+
+							$response->status = "success";
+							$response->msg = "success";
+							$response->invoiceid = $invoiceid;
+							$response->coordinate = "";
+							$response->img_name_1 = "";
+							$response->img_name_2 = "";
+							$response->img_name_3 = "";
+							$response->img_name_4 = "";
+							$json_response = json_encode($response);
+							echo $json_response;
+							exit;
+						} 
+					} catch (mysqli_sql_exception $e){
+							$invoiceid = $donum;
+
+							$response->status = "failed";
+							$response->msg = "duplicate lf_gatepass_temp";
+							$response->invoiceid = $invoiceid;
+							$response->coordinate = "";
+							$response->img_name_1 = "";
+							$response->img_name_2 = "";
+							$response->img_name_3 = "";
+							$response->img_name_4 = "";
+							$json_response = json_encode($response);
+							echo $json_response;
+							exit;
+					}    
 			}
 	  }
 
