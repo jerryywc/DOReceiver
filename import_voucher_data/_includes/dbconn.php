@@ -1,7 +1,7 @@
 <?php
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try{
-$mysqli_conn = mysqli_connect("localhost", "hirevadm_usr", "posimadmin@2018", "hirevadm_db");
+$mysqli_conn = mysqli_connect("localhost", "hirevadm_dorec", "Dorec@Hirevadmin", "hirevadm_db");
 	if(!$mysqli_conn){
 	    echo "Failed to connect to database";
 	    exit;

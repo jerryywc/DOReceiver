@@ -226,34 +226,62 @@
                 $date_only = date('Y-m-d');
                 $time_only = date('H:i:s');
 
-                $sql = "UPDATE lf_gatepass SET img_name_1=?, sync_out='1', coordinate = ?, img_datetime=now(), staff_id = ?, gps_date = ?, gps_time = ?,
-                            status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
-                        WHERE invoiceid IN (" . $invoice_list . ")";
+                $found = false;
 
+                $updated = 0;
 
+                try{
+                    $sql = "UPDATE lf_gatepass SET img_name_1=?, sync_out='1', coordinate = ?, img_datetime=now(), staff_id = ?, gps_date = ?, gps_time = ?,
+                                status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
+                            WHERE invoiceid IN (" . $invoice_list . ")";
 
-                if($stmt = mysqli_prepare($conn, $sql)){       
-                    mysqli_stmt_bind_param($stmt,"sssssss",$newfilename, $coordinate, $staff_name, $date_only, $time_only, $status_by, $email);
-                    mysqli_stmt_execute($stmt);
-                } 
+                    if($stmt = mysqli_prepare($conn, $sql)){       
+                        mysqli_stmt_bind_param($stmt,"sssssss",$newfilename, $coordinate, $staff_name, $date_only, $time_only, $status_by, $email);
+                        mysqli_stmt_execute($stmt);
+                    } 
 
-                if(mysqli_affected_rows($conn) > 0){
-                    $response->status = "success";
-                    $response->msg = "Image upload for: </br>" . $response_msg;
+                    $updated = mysqli_affected_rows($conn);
 
-                    $json_response = json_encode($response);
+                    $sql2 = "UPDATE lf_gatepass_temp SET img_name_1=?, sync_out='1', coordinate = ?, img_datetime=now(), staff_id = ?, gps_date = ?, gps_time = ?,
+                                status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
+                            WHERE invoiceid IN (" . $invoice_list . ")";
 
-                    echo $json_response;
-                    exit;
-                } else {
+                    if($stmt2 = mysqli_prepare($conn, $sql2)){       
+                        mysqli_stmt_bind_param($stmt2,"sssssss",$newfilename, $coordinate, $staff_name, $date_only, $time_only, $status_by, $email);
+                        mysqli_stmt_execute($stmt2);
+                    } 
+
+                    $updated = $updated + mysqli_affected_rows($conn);
+
+                    //if(mysqli_affected_rows($conn) > 0){
+                    if($updated > 0){
+                        $response->status = "success";
+                        $response->msg = "Image upload for: </br>" . $response_msg;
+
+                        $json_response = json_encode($response);
+
+                        echo $json_response;
+                        exit;
+                    } else {
+                        $response->status = "failed";
+                        $response->msg = "Failed to update records for: </br>" . $response_msg;
+                    
+                        $json_response = json_encode($response);
+                    
+                        echo $json_response;
+                        exit;
+                    }
+                } catch (mysqli_sql_exception $e){
+                    //echo $e->getMessage();
+
                     $response->status = "failed";
-                    $response->msg = "Failed to update records for: </br>" . $response_msg;
-                
+                    $response->msg = "Failed to update records: </br>" . $e->getMessage();;
+                    
                     $json_response = json_encode($response);
-                
+                    
                     echo $json_response;
                     exit;
-                }
+                }     
                     
                    
             }else{ // unable to upload file

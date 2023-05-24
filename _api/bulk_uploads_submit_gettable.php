@@ -167,15 +167,39 @@
 
         $sql;
         try{
+            $sql = "SELECT * FROM lf_gatepass WHERE invoiceid like ?";
+
+            if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
+                mysqli_stmt_bind_param($stmt,"s",$do);
+                $result = mysqli_stmt_execute($stmt);
+            } 
+          
+            $result = $stmt -> get_Result();                
+                  
+            $found = false;
+            if($row = mysqli_fetch_array($result)) {
+                $found = true;
+                $update_sql = 
+                    "UPDATE lf_gatepass SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
+                        WHERE invoiceid like ? ";
+            } else {
+                $found = false;
+                $update_sql = 
+                    "UPDATE lf_gatepass_temp SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
+                        WHERE invoiceid like ? ";
+            }
+
+            /*
             $sql ="UPDATE lf_gatepass SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
                     WHERE invoiceid like ? AND coordinate = '' AND gps_date = '' AND gps_time = '' 
                     AND img_name_1 = '' AND img_name_2 = '' AND img_name_3 = '' AND img_name_4 = ''";
-
-            if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
+            */
+            if($stmt = mysqli_prepare($mysqli_conn, $update_sql)){       
                 mysqli_stmt_bind_param($stmt,"sssss",$coordinate, $date_only, $time_only, $staff_name, $do);
                 mysqli_stmt_execute($stmt);
             } 
 
+            /*
             if (strpos($new_file_name, '_1.') !== false){
                 $sql = "UPDATE lf_gatepass SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_1 = ''";
             } else if(strpos($new_file_name, '_2.') !== false) {
@@ -184,6 +208,29 @@
                 $sql = "UPDATE lf_gatepass SET img_name_3 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_3 = ''";
             } else if(strpos($new_file_name, '_4.') !== false) {
                 $sql = "UPDATE lf_gatepass SET img_name_4 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? AND img_name_4 = ''";
+            }
+            */
+
+            if($found){
+                if (strpos($new_file_name, '_1.') !== false){
+                    $sql = "UPDATE lf_gatepass SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_2.') !== false) {
+                    $sql = "UPDATE lf_gatepass SET img_name_2 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_3.') !== false) {
+                    $sql = "UPDATE lf_gatepass SET img_name_3 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_4.') !== false) {
+                    $sql = "UPDATE lf_gatepass SET img_name_4 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                }
+            } else {
+                if (strpos($new_file_name, '_1.') !== false){
+                    $sql = "UPDATE lf_gatepass_temp SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_2.') !== false) {
+                    $sql = "UPDATE lf_gatepass_temp SET img_name_2 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_3.') !== false) {
+                    $sql = "UPDATE lf_gatepass_temp SET img_name_3 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                } else if(strpos($new_file_name, '_4.') !== false) {
+                    $sql = "UPDATE lf_gatepass_temp SET img_name_4 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
+                }
             }
 
             if($stmt = mysqli_prepare($mysqli_conn, $sql)){       

@@ -14,8 +14,8 @@ function connect()
 		$query_conn = mysql_connect("localhost", "root", "");
 		*/
 		$host_user = "localhost";
-		$user_user = "hirevadm_usr";
-		$password_user = "posimadmin@2018";
+		$user_user = "hirevadm_dorec";
+		$password_user = "Dorec@Hirevadmin";
 		$database = "hirevadm_db_dev";
 		
 		//$mysqli = new mysqli("localhost", "root", "");
