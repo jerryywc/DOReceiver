@@ -98,9 +98,9 @@
         }*/
 
         //BEGIN check file size
-        if($_FILES['scanned_file']['size'] > 20000000){
+        if($_FILES['scanned_file']['size'] > 50000000){
             $uploadOk = 0;
-            $error = $error . "File size exceed 20MB: " . $_FILES['scanned_file']['size'];
+            $error = $error . "File size exceed 50MB: " . $_FILES['scanned_file']['size'];
         }
         //END check file size
 
@@ -164,7 +164,7 @@
                 //echo "<script type='text/javascript'>alert(\"Image 1 CURL ERROR -  " . curl_error($ch) . "\");window.history.go(-1);</script>";
 
                 $response->status = "failed";
-                $response->msg = "CURL ERROR - " . curl_error($ch);
+                $response->msg = "CURL ERROR - " . curl_errno($ch) . "|" . curl_error($ch) . "|" . basename($_FILES['scanned_file']['name']) . "|" . $newfilename;
                 
                 $json_response = json_encode($response);
                 
