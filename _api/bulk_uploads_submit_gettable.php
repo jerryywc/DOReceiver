@@ -94,6 +94,31 @@
     //print_r($do_list);
 
 
+    $email = "";
+    $status_by = "";
+
+    try{
+        $sql = "SELECT Email FROM auth_id WHERE FullName = ?";
+
+        if($stmt = mysqli_prepare($conn, $sql)){       
+            mysqli_stmt_bind_param($stmt,"s",$staff_name);
+            $result = mysqli_stmt_execute($stmt);
+        } 
+
+        $result = $stmt -> get_Result();                
+                    
+        // if record found in lf_gatepass
+        if($row = mysqli_fetch_array($result)) {
+            $email = $row['Email'];
+            $status_by = substr($email, 0, strpos($email, "@"));
+        }
+    
+    } catch (mysqli_sql_exception $e){
+        echo $e->getMessage();    
+    }
+
+
+
     $table = "<table id='do_table' border=1 style='width:100%'>
                 <tr>
                     <th>DO No.</th>
@@ -111,10 +136,10 @@
 
         if($status == "success"){
             $status_html = "<span style='color:green'>" . $status . "</span>";
-            update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate);
+            update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate, $status_by, $email);
         }else if($status == "exists"){
             $status_html = "<span style='color:green'>" . $status . "</span>";
-            update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate);
+            update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate, $status_by, $email);
         } else {
             $status_html = "<span style='color:red; font-weight:bold'>" . $status . "</span>";
         }
@@ -160,7 +185,7 @@
 
             
 
-    function update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate){
+    function update_table($mysqli_conn, $do, $new_file_name, $staff_name, $coordinate, $status_by, $email){
         $date_only = date('Y-m-d');
         $time_only = date('H:i:s');
         $do = $do . "%";
@@ -180,12 +205,14 @@
             if($row = mysqli_fetch_array($result)) {
                 $found = true;
                 $update_sql = 
-                    "UPDATE lf_gatepass SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
+                    "UPDATE lf_gatepass SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ?,
+                        status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
                         WHERE invoiceid like ? ";
             } else {
                 $found = false;
                 $update_sql = 
-                    "UPDATE lf_gatepass_temp SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ? 
+                    "UPDATE lf_gatepass_temp SET coordinate = ?, gps_date = ?, gps_time = ?, sync_out = '1', staff_id = ?,
+                        status = '1', status_date = now(), status_by = ?, status_by_fullname = ?, dms_sync = '1'
                         WHERE invoiceid like ? ";
             }
 
@@ -195,7 +222,7 @@
                     AND img_name_1 = '' AND img_name_2 = '' AND img_name_3 = '' AND img_name_4 = ''";
             */
             if($stmt = mysqli_prepare($mysqli_conn, $update_sql)){       
-                mysqli_stmt_bind_param($stmt,"sssss",$coordinate, $date_only, $time_only, $staff_name, $do);
+                mysqli_stmt_bind_param($stmt,"sssssss",$coordinate, $date_only, $time_only, $staff_name, $status_by, $email, $do);
                 mysqli_stmt_execute($stmt);
             } 
 
