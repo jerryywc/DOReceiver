@@ -93,7 +93,6 @@
     //echo "do_list: ";
     //print_r($do_list);
 
-
     $email = "";
     $status_by = "";
 
@@ -116,8 +115,6 @@
     } catch (mysqli_sql_exception $e){
         echo $e->getMessage();    
     }
-
-
 
     $table = "<table id='do_table' border=1 style='width:100%'>
                 <tr>
@@ -238,6 +235,8 @@
             }
             */
 
+            $sql = "";
+
             if($found){
                 if (strpos($new_file_name, '_1.') !== false){
                     $sql = "UPDATE lf_gatepass SET img_name_1 = ?, img_datetime=now(), staff_id = ? WHERE invoiceid like ? ";
@@ -260,10 +259,12 @@
                 }
             }
 
-            if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
-                mysqli_stmt_bind_param($stmt,"sss",$new_file_name, $staff_name, $do);
-                mysqli_stmt_execute($stmt);
-            } 
+            if(isset($sql) && !empty($sql)){
+                if($stmt = mysqli_prepare($mysqli_conn, $sql)){       
+                    mysqli_stmt_bind_param($stmt,"sss",$new_file_name, $staff_name, $do);
+                    mysqli_stmt_execute($stmt);
+                } 
+            }
                     
         } catch (mysqli_sql_exception $e){
             echo $e->getMessage();    
