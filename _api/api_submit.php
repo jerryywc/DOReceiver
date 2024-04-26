@@ -50,7 +50,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
             $coordinate = $row['coordinate'];
 
             if(!empty($coordinate)){
-                echo "<script>alert('Coordinate already exist.');</script>";
+                //echo "<script>alert('Coordinate already exist.');</script>";
                 
             } else {
 
@@ -89,7 +89,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                 $coordinate = $row['coordinate'];
 
                 if(!empty($coordinate)){
-                    echo "<script>alert('Coordinate already exist.');</script>";
+                    //echo "<script>alert('Coordinate already exist.');</script>";
                     
                 } else {
 
@@ -118,7 +118,9 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
     }
 
 
-}else{ // check in gps and upload images
+}
+else
+{ // check in gps and upload images
 
      //"h:i:sa
     $today = date('Y-m-d');
@@ -166,6 +168,21 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
 
             if($stmt = mysqli_prepare($conn, $sql)){       
                 mysqli_stmt_bind_param($stmt,"sss", $gps, $auth_id, $id);
+                mysqli_stmt_execute($stmt);
+            } 
+        } else {
+            date_default_timezone_set("Asia/Kuala_Lumpur");
+            $datetime = date('Y-m-d H:i:s');
+            $date_only = date('Y-m-d');
+            $time_only = date('H:i:s');
+
+            $sql = "UPDATE lf_gatepass 
+                    SET gps_date='$date_only', gps_time='$time_only', sync_out = '1', 
+                        staff_id = ?
+                    WHERE invoiceid = ? AND gps_date = ''  AND gps_time = ''";
+
+            if($stmt = mysqli_prepare($conn, $sql)){       
+                mysqli_stmt_bind_param($stmt,"ss", $auth_id, $id);
                 mysqli_stmt_execute($stmt);
             } 
         }
@@ -290,7 +307,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     //$upname = "uploaded.txt"; // File name to be uploaded as
 
                     // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
+                    $cf = new CURLFile($file, mime_content_type_X($file), $target_file);
 
                     // (C) CURL INIT
                     $ch = curl_init();
@@ -439,7 +456,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     //$upname = "uploaded.txt"; // File name to be uploaded as
 
                     // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
+                    $cf = new CURLFile($file, mime_content_type_X($file), $target_file);
 
                     // (C) CURL INIT
                     $ch = curl_init();
@@ -587,7 +604,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     //$upname = "uploaded.txt"; // File name to be uploaded as
 
                     // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
+                    $cf = new CURLFile($file, mime_content_type_X($file), $target_file);
 
                     // (C) CURL INIT
                     $ch = curl_init();
@@ -735,7 +752,7 @@ if($img1 == "" && $img2 == "" && $img3 == "" && $img4 == ""){ // check in gps on
                     //$upname = "uploaded.txt"; // File name to be uploaded as
 
                     // (B) NEW CURL FILE
-                    $cf = new CURLFile($file, mime_content_type($file), $target_file);
+                    $cf = new CURLFile($file, mime_content_type_X($file), $target_file);
 
                     // (C) CURL INIT
                     $ch = curl_init();
@@ -828,7 +845,7 @@ echo "<script>location.assign('/DOReceiver/index.php?NID=$auth_id');</script>";
 
 
 
-    function mime_content_type($f) {
+    function mime_content_type_X($f) {
       $filename = $f;
 
         $mime_types = array(
